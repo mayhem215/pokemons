@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+  <form action="/delete/" method="post">
+    <section id="one" class="wrapper style2">
+      <div class="inner">
+        <div class="grid-style">
+          {% csrf_token %}
+
+          {% for post in posts %}
+            <div class="box">
+              <div class="content">
+
+                {% if user.is_authenticated %}
+                  <div><h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}<img src={{ post.photo}} width="100" height="75"></a><a></a></h1></div>
+                {% endif %}
+
+                <h3>Имя:</h3>{{ post.title }}
+                <h3>Вес:</h3>{{ post.weight }}
+                <h3>Пол:</h3>{{ post.gender }}
+                <h3>Тип:</h3>{{ post.type }}
+ <br>
+                {% if user.is_authenticated %}
+                <label><h1>Удалить</h1></label> <input type="checkbox" name="del"  id="del{{ forloop.counter }}" value="{{ post.pk }}" >
+                {% endif %}
+                <p>{{ post.text|linebreaksbr }}</p>
+              </div>
+            </div>
+
+          {% endfor %}
+
+
+          {% if user.is_authenticated %}
+            <footer class="align-center">
+              <button type="submit" >Удалить</button>
+            </footer>
+          {% endif %}
+
+        </div>
+      </div>
+    </section>
+  </form>
+{% endblock %}
+
+
